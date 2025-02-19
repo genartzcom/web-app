@@ -10,14 +10,15 @@
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.0.6",
+    "motion": "^12.4.3",
     "next": "15.1.7",
     "postcss": "^8.5.2",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "tailwindcss": "^4.0.6",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.10",
-    "remixicon": "^4.6.0"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "remixicon": "^4.6.0",
+    "tailwindcss": "^4.0.6"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
