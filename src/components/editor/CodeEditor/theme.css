@@ -66,3 +66,11 @@
 .ͼd {
   color: #e49163 !important;
 }
+
+.cm-tooltip {
+  background-color: #1f1f1f !important;
+  border: none !important;
+}
+.cm-tooltip li[aria-selected='true'] {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}
