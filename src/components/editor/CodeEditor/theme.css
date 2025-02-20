@@ -6,6 +6,7 @@
   border: none !important;
   outline: none !important;
 }
+
 ::-webkit-scrollbar {
   width: 0 !important;
   height: 0 !important;
@@ -47,4 +48,21 @@
 }
 .cm-gutterElement {
   width: 18px !important;
+}
+
+.ͼb {
+  color: #e37d84 !important;
+}
+.ͼg {
+  color: #ffffff !important;
+}
+.ͼe {
+  color: #7ab2f7 !important;
+}
+
+.ͼm {
+  color: #808080 !important;
+}
+.ͼd {
+  color: #e49163 !important;
 }
