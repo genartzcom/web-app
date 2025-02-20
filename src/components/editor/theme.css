@@ -1,0 +1,50 @@
+.cm-editor {
+  background-color: transparent !important;
+  color: #fff !important;
+  height: 100% !important;
+  width: 100% !important;
+  border: none !important;
+  outline: none !important;
+}
+::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.cm-content {
+  font-size: 16px !important;
+  line-height: 23px !important;
+}
+
+.cm-focused {
+  border: none !important;
+  outline-color: transparent !important;
+}
+
+.cm-gutters {
+  background-color: transparent !important;
+  border: none !important;
+  color: #454545 !important;
+  text-align: right !important;
+  width: 34px !important;
+  margin: 0 !important;
+  line-height: 24px !important;
+}
+
+.cm-cursor {
+  border-left: 1px solid #ffffff !important;
+  margin-left: 1px !important;
+}
+
+.cm-activeLine,
+.cm-activeLineGutter {
+  background-color: #1f1f1f !important;
+}
+.cm-gutters {
+  padding: 0 !important;
+  margin: 0 !important;
+  width: fit-content !important;
+}
+.cm-gutterElement {
+  width: 18px !important;
+}
