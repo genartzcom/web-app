@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 import Console from './Console';
 import Sidebar from './SideNavigation';
@@ -9,6 +9,23 @@ import Button from '@/components/ui/Button';
 const Editor = () => {
   const [content, setContent] = useState('');
   const [activeTab, setActiveTab] = useState<'code' | 'metadata'>('code');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImportClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setContent(e.target?.result as string);
+      };
+      reader.readAsText(file);
+    }
+    event.target.value = '';
+  };
 
   return (
     <div className="flex h-full w-full max-w-[50vw] min-w-[720px]">
@@ -20,8 +37,9 @@ const Editor = () => {
             <i className="ri-file-code-line" />
             <p>{activeTab === 'code' ? 'generation-code.p5.js' : 'metadata.yml'}</p>
           </div>
-          <div className={'ml-auto flex items-center gap-2'}>
-            <Button size={'sm'} variant={'secondary'}>
+          <div className="ml-auto flex items-center gap-2">
+            <input type="file" accept=".js" className="hidden" ref={fileInputRef} onChange={handleFileChange} />
+            <Button size={'sm'} variant={'secondary'} onClick={handleImportClick}>
               Import
               <i className="ri-import-fill font-normal" />
             </Button>
