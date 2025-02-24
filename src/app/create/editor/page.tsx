@@ -12,7 +12,9 @@ export default function EditorPage() {
           <Button variant={'secondary'} size={'md'}>
             Back to Edit
           </Button>
-          <Button size={'md'}>Next Step</Button>
+          <Button href={'/create/deploy'} size={'md'}>
+            Next Step
+          </Button>
         </div>
       </div>
     </div>

@@ -9,6 +9,8 @@ interface InputProps {
   required?: boolean;
   disabled?: boolean;
   maxLength?: number;
+  value?: string | number;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -20,6 +22,8 @@ const Input: React.FC<InputProps> = ({
   required = false,
   disabled = false,
   maxLength,
+  value,
+  onChange,
   ...props
 }) => {
   return (
@@ -36,6 +40,8 @@ const Input: React.FC<InputProps> = ({
           disabled={disabled}
           maxLength={maxLength}
           className={`h-[100px] resize-none rounded-[8px] border border-neutral-600 bg-neutral-700 px-4 py-2 outline-none focus:border-neutral-400 ${disabled ? 'cursor-not-allowed opacity-70' : ''} ${className}`}
+          value={value}
+          onChange={onChange}
           {...props}
         />
       ) : (
@@ -46,6 +52,8 @@ const Input: React.FC<InputProps> = ({
           disabled={disabled}
           maxLength={maxLength}
           className={`h-[42px] rounded-[8px] border border-neutral-600 bg-neutral-700 px-4 outline-none focus:border-neutral-400 ${disabled ? 'cursor-not-allowed opacity-70' : ''} ${className}`}
+          value={value}
+          onChange={onChange}
           {...props}
         />
       )}

@@ -1,13 +1,16 @@
 'use client';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 import Console from './Console';
 import Sidebar from './SideNavigation';
 import TextEditor from '@/components/editor/CodeEditor/TextEditor';
 import Button from '@/components/ui/Button';
+import { useCreateStore } from '@/store/createStore';
 
 const Editor = () => {
-  const [content, setContent] = useState('');
+  const { code, setCode } = useCreateStore();
+
+  const [content, setContent] = useState(code);
   const [activeTab, setActiveTab] = useState<'code' | 'metadata'>('code');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -27,6 +30,10 @@ const Editor = () => {
     event.target.value = '';
   };
 
+  const handleRunClick = () => {
+    setCode(content);
+  };
+
   return (
     <div className="flex h-full w-full max-w-[50vw] min-w-[720px]">
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -43,7 +50,7 @@ const Editor = () => {
               Import
               <i className="ri-import-fill font-normal" />
             </Button>
-            <Button size={'sm'} variant={'primary'}>
+            <Button size={'sm'} variant={'primary'} onClick={handleRunClick}>
               Run
               <i className="ri-play-fill font-normal" />
             </Button>

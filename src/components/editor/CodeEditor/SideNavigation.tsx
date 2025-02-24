@@ -9,7 +9,7 @@ const SideNavigation = ({ activeTab, setActiveTab }: SideNavigationProps) => {
   return (
     <div className="flex w-64 min-w-64 flex-none flex-col border-r border-neutral-600">
       <div className="flex h-16 w-full items-center border-b border-neutral-600 px-6 text-[24px] text-neutral-400">
-        <Link href={'/'}>
+        <Link href={'/create'}>
           <i className="ri-arrow-left-line" />
         </Link>
       </div>
