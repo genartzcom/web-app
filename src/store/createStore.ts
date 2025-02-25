@@ -26,7 +26,7 @@ export const useCreateStore = create<CreateState>((set) => ({
   description: '',
   price: 0,
   supply: 1,
-  code: '',
+  code: ' ',
   isCompiled: false,
   error: null,
 
