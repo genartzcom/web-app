@@ -9,7 +9,7 @@ export default function EditorPage() {
       <div className={'flex h-full w-full flex-col items-center justify-center gap-5 p-6'}>
         <Renderer />
         <div className={'flex items-center gap-2'}>
-          <Button variant={'secondary'} size={'md'}>
+          <Button href={'/create/customize'} variant={'secondary'} size={'md'}>
             Back to Edit
           </Button>
           <Button href={'/create/deploy'} size={'md'}>

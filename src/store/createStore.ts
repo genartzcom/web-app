@@ -8,6 +8,7 @@ interface CreateState {
   supply: number;
   code: string;
   isCompiled: boolean;
+  isConsoleOpen: boolean;
   error: string | null;
 
   setImage: (file: File | null) => void;
@@ -17,6 +18,7 @@ interface CreateState {
   setSupply: (supply: number) => void;
   setCode: (code: string) => void;
   setIsCompiled: (status: boolean) => void;
+  setIsConsoleOpen: (status: boolean) => void;
   setError: (error: string | null) => void;
 }
 
@@ -28,6 +30,7 @@ export const useCreateStore = create<CreateState>((set) => ({
   supply: 1,
   code: ' ',
   isCompiled: false,
+  isConsoleOpen: false,
   error: null,
 
   setImage: (file) => set({ image: file }),
@@ -37,5 +40,6 @@ export const useCreateStore = create<CreateState>((set) => ({
   setSupply: (supply) => set({ supply }),
   setCode: (code) => set({ code }),
   setIsCompiled: (status) => set({ isCompiled: status }),
+  setIsConsoleOpen: (status) => set({ isConsoleOpen: status }),
   setError: (error) => set({ error }),
 }));

@@ -5,7 +5,7 @@ import { useCreateStore } from '@/store/createStore';
 
 const Renderer: React.FC = () => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const { code, setError, error } = useCreateStore();
+  const { code, setError, error, setIsConsoleOpen } = useCreateStore();
   const [srcDoc, setSrcDoc] = useState<string>('');
 
   useEffect(() => {
@@ -64,12 +64,15 @@ const Renderer: React.FC = () => {
     const handleMessage = (event: MessageEvent) => {
       if (event.data.type === 'error') {
         setError(event.data.message);
+        setIsConsoleOpen(true);
       }
       if (event.data.type === 'consoleLog') {
         setError(event.data.message);
+        setIsConsoleOpen(true);
       }
       if (event.data.type === 'consoleError') {
         setError(event.data.message);
+        setIsConsoleOpen(true);
       }
     };
 
