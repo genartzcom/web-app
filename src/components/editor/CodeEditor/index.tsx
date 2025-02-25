@@ -8,7 +8,7 @@ import Button from '@/components/ui/Button';
 import { useCreateStore } from '@/store/createStore';
 
 const Editor = () => {
-  const { code, setCode } = useCreateStore();
+  const { code, setCode, setError } = useCreateStore();
 
   const [content, setContent] = useState(code);
   const [activeTab, setActiveTab] = useState<'code' | 'metadata'>('code');
@@ -31,8 +31,41 @@ const Editor = () => {
   };
 
   const handleRunClick = () => {
+    setError(null);
     setCode(content);
+
+    // Syntax error handling using eval
+    try {
+      // Safely evaluate the code (this is a basic example, avoid using eval in production without validation)
+      eval(content);
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Unknown error');
+    }
   };
+
+  // Listen for global errors
+  useEffect(() => {
+    // Capture JavaScript errors globally
+    const handleGlobalError = (event: ErrorEvent) => {
+      setError(event.message);
+      return true; // Prevent default browser error handling
+    };
+
+    window.addEventListener('error', handleGlobalError);
+
+    // Capture console errors and redirect them to setError
+    const originalConsoleError = console.error;
+    console.error = (...args: any[]) => {
+      // Send console errors to setError
+      setError(args.join(' '));
+      originalConsoleError(...args); // Still call the original console.error
+    };
+
+    return () => {
+      window.removeEventListener('error', handleGlobalError);
+      console.error = originalConsoleError; // Restore original console.error
+    };
+  }, [setError]);
 
   return (
     <div className="flex h-full w-full max-w-[50vw] min-w-[720px]">

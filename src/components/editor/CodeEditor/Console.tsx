@@ -1,9 +1,11 @@
 'use client';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useCreateStore } from '@/store/createStore';
 
 const Console = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { error } = useCreateStore();
 
   return (
     <motion.div
@@ -19,7 +21,9 @@ const Console = () => {
           <i className={`ri-arrow-down-s-line transition ${isOpen ? '' : 'rotate-180'}`} />
         </button>
       </div>
-      <div className={'h-64 w-full bg-neutral-900'}></div>
+      <div className={'h-64 w-full bg-neutral-900'}>
+        <p className={'w-full text-wrap'}>{error}</p>
+      </div>
     </motion.div>
   );
 };

@@ -1,63 +1,89 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
-import p5 from 'p5';
-
+import React, { useEffect, useRef, useState } from 'react';
 import { useCreateStore } from '@/store/createStore';
 
 const Renderer: React.FC = () => {
-  const sketchRef = useRef<p5 | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-
+  const iframeRef = useRef<HTMLIFrameElement>(null);
   const { code, setError, error } = useCreateStore();
+  const [srcDoc, setSrcDoc] = useState<string>('');
 
   useEffect(() => {
-    setError(null);
+    const iframeContent = `
+      <html>
+        <head>
+        <style>
+        body,html{
+          width:100vw;
+          height:100vh;
+          overflow:hidden !important;
+          margin: 0;
+          padding: 0;
+        }
+        main{
+          width:512px;
+          height: 512px;
+        }
+        canvas{
+          width: 100% !important;
+          height: 100% !important;
+          overflow: hidden !important;
+        }
+        </style>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+        </head>
+        <body>
+          <script>
+            
 
-    if (sketchRef.current) {
-      sketchRef.current.remove();
-      sketchRef.current = null;
-    }
+            const originalConsoleLog = console.log;
+            const originalConsoleError = console.error;
 
-    if (containerRef.current) {
-      try {
-        const customP5 = (p: any) => {
-          const originalCreateCanvas = p.createCanvas;
+            console.log = function (...args) {
+              window.parent.postMessage({ type: 'consoleLog', message: args.join(' ') }, '*');
+              originalConsoleLog.apply(console, args);
+            };
 
-          p.createCanvas = function () {
-            return originalCreateCanvas.call(p, 512, 512);
-          };
+            console.error = function (...args) {
+              window.parent.postMessage({ type: 'consoleError', message: args.join(' ') }, '*');
+              originalConsoleError.apply(console, args);
+            };
 
-          p.setup = () => {
-            p.createCanvas(512, 512);
-            p.background(24);
-          };
+            try {
+              ${code}
+            } catch (e) {
+              window.parent.postMessage({ type: 'error', message: e.message }, '*');
+            }
+          </script>
+        </body>
+      </html>
+    `;
 
-          try {
-            const userCode = new Function('p', code);
-            userCode(p);
-          } catch (err: any) {
-            setError(err.message);
-          }
-        };
-        sketchRef.current = new p5(customP5, containerRef.current);
-      } catch (err: any) {
-        setError(err.message);
+    setSrcDoc(iframeContent);
+
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data.type === 'error') {
+        setError(event.data.message);
       }
-    }
+      if (event.data.type === 'consoleLog') {
+        setError(event.data.message);
+      }
+      if (event.data.type === 'consoleError') {
+        setError(event.data.message);
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
 
     return () => {
-      if (sketchRef.current) {
-        sketchRef.current.remove();
-        sketchRef.current = null;
-      }
+      window.removeEventListener('message', handleMessage);
     };
   }, [code, setError]);
 
   return (
     <div className={'aspect-square rounded-[24px] border border-neutral-500 bg-neutral-600 p-3'}>
       <div className={'relative h-[512px] w-[512px] overflow-hidden rounded-[12px] border border-neutral-500 bg-neutral-700'}>
-        <div ref={containerRef} />
+        <iframe ref={iframeRef} srcDoc={srcDoc} title="p5.js Renderer" width="512" height="512" frameBorder="0" scrolling="no" />
         {code.length < 2 && (
           <div className={'absolute top-0 left-0 flex h-full w-full items-center justify-center bg-neutral-700'}>
             Press run button to render the p5 code
