@@ -34,36 +34,31 @@ const Editor = () => {
     setError(null);
     setCode(content);
 
-    // Syntax error handling using eval
     try {
-      // Safely evaluate the code (this is a basic example, avoid using eval in production without validation)
       eval(content);
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Unknown error');
     }
   };
 
-  // Listen for global errors
   useEffect(() => {
-    // Capture JavaScript errors globally
     const handleGlobalError = (event: ErrorEvent) => {
       setError(event.message);
-      return true; // Prevent default browser error handling
+      return true;
     };
 
     window.addEventListener('error', handleGlobalError);
 
-    // Capture console errors and redirect them to setError
     const originalConsoleError = console.error;
     console.error = (...args: any[]) => {
       // Send console errors to setError
       setError(args.join(' '));
-      originalConsoleError(...args); // Still call the original console.error
+      originalConsoleError(...args);
     };
 
     return () => {
       window.removeEventListener('error', handleGlobalError);
-      console.error = originalConsoleError; // Restore original console.error
+      console.error = originalConsoleError;
     };
   }, [setError]);
 

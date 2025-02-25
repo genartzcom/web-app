@@ -41,7 +41,13 @@ export default function CustomizePage() {
           </div>
         </div>
         <div className={'flex w-full items-center justify-center'}>
-          <NftCard />
+          <NftCard
+            title={title}
+            imageUrl={image ? URL.createObjectURL(image) : '/media/images/placeholder.jpg'}
+            description={description}
+            id={supply}
+            price={price.toString()}
+          />
         </div>
       </div>
     </div>

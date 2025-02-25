@@ -22,8 +22,8 @@ export default function DeployPage() {
                 <p className={'w-28 text-neutral-300'}>Title :</p>
                 <p className={'text-neutral-100'}>{title || 'N/A'}</p>
               </div>
-              <div className={'flex items-center gap-2'}>
-                <p className={'w-28 text-neutral-300'}>Description :</p>
+              <div className={'flex items-start gap-2'}>
+                <p className={'w-28 flex-none text-neutral-300'}>Description :</p>
                 <p className={'text-neutral-100'}>{description || 'N/A'}</p>
               </div>
               <div className={'flex items-center gap-2'}>
@@ -44,7 +44,13 @@ export default function DeployPage() {
           </div>
         </div>
         <div className={'flex w-full items-center justify-center'}>
-          <NftCard />
+          <NftCard
+            title={title}
+            imageUrl={image ? URL.createObjectURL(image) : '/media/images/placeholder.jpg'}
+            description={description}
+            id={supply}
+            price={price.toString()}
+          />
         </div>
       </div>
     </div>
