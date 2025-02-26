@@ -8,6 +8,7 @@ export default function Layout({
   return (
     <div className={'flex min-h-screen flex-col items-center'}>
       <Navigation />
+      {children}
       <Footer />
     </div>
   );

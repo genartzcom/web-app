@@ -1,8 +1,9 @@
+import Hero from '@/components/home/Hero';
+
 export default function Home() {
   return (
-    <div>
-      <i className="ri-home-2-line"></i>
-      index page
+    <div className={'flex w-full flex-col'}>
+      <Hero />
     </div>
   );
 }
