@@ -33,7 +33,7 @@ const SideNavigation = ({ activeTab, setActiveTab }: SideNavigationProps) => {
           <p>metadata.yml</p>
         </button>
         <Link
-          href={'/'}
+          href={'/public'}
           target={'_blank'}
           className="flex cursor-pointer items-center gap-1 px-6 py-3 font-medium text-neutral-300/75 transition hover:bg-neutral-700"
         >

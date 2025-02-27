@@ -1,5 +1,5 @@
-import CodeEditor from '@/components/editor/CodeEditor';
-import Renderer from '@/components/editor/Renderer';
+import CodeEditor from '../../../components/create/editor/CodeEditor';
+import Renderer from '../../../components/create/editor/Renderer';
 import Button from '@/components/ui/Button';
 
 export default function EditorPage() {

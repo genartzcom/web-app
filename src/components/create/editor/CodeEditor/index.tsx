@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 
 import Console from './Console';
 import Sidebar from './SideNavigation';
-import TextEditor from '@/components/editor/CodeEditor/TextEditor';
+import TextEditor from '@/components/create/editor/CodeEditor/TextEditor';
 import Button from '@/components/ui/Button';
 import { useCreateStore } from '@/store/createStore';
 
