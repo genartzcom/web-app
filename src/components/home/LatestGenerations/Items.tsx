@@ -6,7 +6,8 @@ type Collection = {
   creator: string;
   imageSrc: string;
   totalMinted: number;
-  floorPrice: number;
+  supply: number;
+  price: number;
 };
 
 const fetchCollections = async (): Promise<Collection[]> => {

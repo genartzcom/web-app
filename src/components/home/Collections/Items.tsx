@@ -26,7 +26,7 @@ const Items = async () => {
   return (
     <div className="grid grid-cols-3 items-stretch gap-8 max-lg:grid-cols-2 max-md:grid-cols-1">
       {collections.map((collection) => (
-        <CollectionCard key={collection.id} {...collection} />
+        <CollectionCard isModularium={true} key={collection.id} {...collection} />
       ))}
     </div>
   );
