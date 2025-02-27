@@ -31,7 +31,7 @@ const Navigation = () => {
         <div className="flex items-center gap-3">
           <ConnectWallet />
           {isConnected && (
-            <Button variant="secondary" href="/create">
+            <Button external variant="secondary" href="/create">
               <i className="ri-add-line" />
               Create
             </Button>

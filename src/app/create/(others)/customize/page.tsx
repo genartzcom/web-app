@@ -1,6 +1,6 @@
 'use client';
 
-import NftCard from '@/components/NftCard';
+import NftCard from '@/components/create/NftCard';
 import ImageInput from '@/components/ui/ImageInput';
 import TextInput from '@/components/ui/TextInput';
 import Button from '@/components/ui/Button';

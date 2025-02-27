@@ -32,10 +32,12 @@ const Hero = () => {
           <p className={'text-[24px] font-medium text-neutral-200'}>also great subtitle will be here</p>
         </div>
         <div className={'flex items-center gap-2'}>
-          <Button href={'#explore'} variant={'secondary'}>
+          <Button href={'#latest'} variant={'secondary'}>
             Explore GenArtz
           </Button>
-          <Button href={'/create'}>Create Your Own</Button>
+          <Button external href={'/create'}>
+            Create Your Own
+          </Button>
         </div>
       </div>
     </div>

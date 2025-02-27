@@ -1,7 +1,7 @@
 'use client';
 
 import { useCreateStore } from '@/store/createStore';
-import NftCard from '@/components/NftCard';
+import NftCard from '@/components/create/NftCard';
 import Button from '@/components/ui/Button';
 
 export default function DeployPage() {
