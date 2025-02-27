@@ -1,8 +1,8 @@
 import Divider from '@/components/Divider';
-import Hero from '@/components/home/Hero';
-import Latest from '@/components/home/LatestGenerations';
-import Collections from '@/components/home/Collections';
-import CreateSection from '@/components/home/CreateSection';
+import Hero from '@/components/marketplace/Hero';
+import Latest from '../../components/marketplace/LatestGenerations';
+import Collections from '../../components/marketplace/Collections';
+import CreateSection from '@/components/marketplace/CreateSection';
 
 import { Suspense } from 'react';
 

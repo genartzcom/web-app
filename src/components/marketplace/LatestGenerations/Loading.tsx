@@ -1,4 +1,4 @@
-import CollectionCardLoading from '@/components/home/CollectionCard/Loading';
+import CollectionCardLoading from '@/components/marketplace/CollectionCard/Loading';
 
 const Loading = async () => {
   return (

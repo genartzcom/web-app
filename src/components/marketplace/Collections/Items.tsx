@@ -1,4 +1,4 @@
-import CollectionCard from '@/components/home/CollectionCard';
+import CollectionCard from '@/components/marketplace/CollectionCard';
 
 type Collection = {
   id: string;
@@ -6,13 +6,12 @@ type Collection = {
   creator: string;
   imageSrc: string;
   totalMinted: number;
-  supply: number;
-  price: number;
+  floorPrice: number;
 };
 
 const fetchCollections = async (): Promise<Collection[]> => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/collections/latest`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/collections/modularium`);
     if (!res.ok) throw new Error('Failed to fetch modularium');
     return res.json();
   } catch (error) {
@@ -27,7 +26,7 @@ const Items = async () => {
   return (
     <div className="grid grid-cols-3 items-stretch gap-8 max-lg:grid-cols-2 max-md:grid-cols-1">
       {collections.map((collection) => (
-        <CollectionCard key={collection.id} {...collection} />
+        <CollectionCard isModularium={true} key={collection.id} {...collection} />
       ))}
     </div>
   );

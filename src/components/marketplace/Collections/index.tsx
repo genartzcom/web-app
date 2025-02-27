@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
-import Loading from '@/components/home/Collections/Loading';
-import Items from '@/components/home/Collections/Items';
+import Loading from '@/components/marketplace/Collections/Loading';
+import Items from '@/components/marketplace/Collections/Items';
 
 const Index = () => {
   return (

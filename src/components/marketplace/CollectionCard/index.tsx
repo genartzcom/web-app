@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 type NftCardProps = {
-  href?: string;
+  id: string;
   imageSrc?: string;
   title?: string;
   creator?: string;
@@ -13,7 +13,7 @@ type NftCardProps = {
 };
 
 const NftCard: React.FC<NftCardProps> = ({
-  href = '/',
+  id = '',
   imageSrc = '/media/images/placeholder.jpg',
   title = 'NftTitle',
   creator = 'ardasari.eth',
@@ -23,7 +23,10 @@ const NftCard: React.FC<NftCardProps> = ({
   isModularium = false,
 }) => {
   return (
-    <Link href={href} className={'flex h-full w-full flex-col gap-3 rounded-lg bg-neutral-600 p-4 transition duration-150 active:scale-[98%]'}>
+    <Link
+      href={`/collection/${id}`}
+      className={'flex h-full w-full flex-col gap-3 rounded-lg bg-neutral-600 p-4 transition duration-150 active:scale-[98%]'}
+    >
       <Image className={'aspect-square w-full rounded-md'} src={imageSrc} width={400} height={400} alt={title} />
       <div className={'flex flex-col leading-none'}>
         <p className={'text-[24px] font-medium'}>{title}</p>
