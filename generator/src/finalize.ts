@@ -1,9 +1,7 @@
 import * as analyzer from './analyze';
-import * as p5process from './process';
 import * as solGen from './sol.generator';
 import fs from 'fs';
 import * as console from 'node:console';
-import { compress } from './compress';
 
 // NFT Contract Generator instance
 const nftContractGenerator = new solGen.NFTContractGenerator();
@@ -14,12 +12,6 @@ const templateSolidity: string = fs.readFileSync('Example.sol', 'utf-8');
 
 // Kodu analiz et
 const analysis = analyzer.analyzeCode(code);
-
-// p5js process
-const processedCode = p5process.process(code);
-const p5slot = compress(processedCode, 512);
-
-console.log(processedCode);
 
 // Çıktıları sırayla görmek için hepsini çağır
 console.log('===== Collection Addresses =====');
@@ -86,21 +78,5 @@ contract NFTCollection {
 `;
 console.log(nftContractGenerator.generateCompleteContract(templateCode, analysis, [code]));
 
-function final(): string {
-  return templateSolidity
-    .replaceAll('%CONTRACT_NAME%', 'NFTCollection')
-    .replaceAll('%COLLECTION_CONTRACTS%', nftContractGenerator.generateCollectionAddresses(analysis.collections))
-    .replaceAll('%COLLECTION_CODE%', nftContractGenerator.generateCollectionIndexes(analysis.collections))
-    .replaceAll('%CHUNKS%', nftContractGenerator.generateP5Storage(p5slot))
-    .replaceAll('%COLLECTION_TRAITS%', nftContractGenerator.generateTraitRegistration(analysis.data))
-    .replaceAll('%ID_MAPPING%', nftContractGenerator.generateTokenIdMapping(analysis.collections))
-    .replaceAll('%REQUIRED_MINT_CODE%', nftContractGenerator.generateOwnershipChecks(analysis.collections))
-    .replaceAll('%METADATA_EXP%', nftContractGenerator.generateMetadataExtraction(analysis.traits))
-    .replaceAll('%TRAIT_JS%', nftContractGenerator.generateSolidityJsField(analysis.collections))
-    .replaceAll('%TRAIT_BASE64%', nftContractGenerator.generateSolidityBase64EncodedField(analysis.collections))
-    .replaceAll('%P5_LS%', nftContractGenerator.generateP5Ls(p5slot))
-    .replaceAll("%ATTRIBUTES%", nftContractGenerator.generateMetadataSettings(analysis.traits))
-    .replaceAll("%CEMENT_METADATA_CODE%", nftContractGenerator.generateMetadataCementing());
-}
 
-fs.writeFileSync('Output.sol', final(), 'utf8');
+fs.writeFileSync('output.sol', templateCode, 'utf8');

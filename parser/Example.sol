@@ -29,8 +29,7 @@ contract %CONTRACT_NAME% is Ownable2Step, ContractMetadata, ERC721Cementable {
     //address private constant MAMMOTH_COLLECTION = 0xe2d085f8c89A6360bfD04Ff1f87564D0Dd55B005;
     %COLLECTION_CONTRACTS%
 
-    %COLLECTION_CODEB%
-    //string private constant MAMMOTH_ID_SVG = '';
+    %COLLECTION_CODE%
 
     mapping(uint256 => TraitRegistry[]) private _traitRegistry;
     mapping(uint256 => uint256) private _traitRegistrySize;
@@ -100,7 +99,6 @@ contract %CONTRACT_NAME% is Ownable2Step, ContractMetadata, ERC721Cementable {
     }
 
 
-
     function _generateTrait(string memory collection, string[] memory types, string[] memory keys, string[] memory values) internal pure returns (string memory) {
         string memory code = string(abi.encodePacked("const ", collection, " = { traits: { "));
         for(uint i = 0; i < keys.length; i++) {
@@ -110,8 +108,37 @@ contract %CONTRACT_NAME% is Ownable2Step, ContractMetadata, ERC721Cementable {
         return code;
     }
 
-    function _generateTokenImage() {
+    function generateCollectionTraitJS(string memory collectionName, address collectionAddress, uint256 collectionIndex, uint256 tokenId) public view returns (string memory) {
+        (string[] memory types, string[] memory keys) = getTraitsFromRegistry(collectionIndex);
 
+        string[] memory values = getTraitValuesFromContract(collectionAddress, tokenId, keys);
+
+        return _generateTrait(collectionName, types, keys, values);
+    }
+
+    function getTraitValuesFromContract(address collectionAddress, uint256 tokenId, string[] memory keys) internal view returns (string[] memory) {
+        string[] memory values = new string[](keys.length);
+
+        for (uint i = 0; i < keys.length; i++) {
+            values[i] = IERC721(collectionAddress).getTokenAttribute(tokenId, keys[i]);
+        }
+
+        return values;
+    }
+
+    function getTraitsFromRegistry(uint256 collectionIndex) internal view returns (string[] memory, string[] memory) {
+        uint256 size = _traitRegistrySize[collectionIndex];
+        require(size > 0, "No traits found for this collection");
+
+        string[] memory types = new string[](size);
+        string[] memory keys = new string[](size);
+
+        for (uint i = 0; i < size; i++) {
+            types[i] = _traitRegistry[collectionIndex][i].jtype;
+            keys[i] = _traitRegistry[collectionIndex][i].key;
+        }
+
+        return (types, keys);
     }
 
     function _generateTokenImage(

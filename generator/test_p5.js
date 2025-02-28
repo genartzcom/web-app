@@ -41,8 +41,8 @@ function FormaCollection(address) {
 
 
 
-const MAMMOTHS = FormaCollection("0x1234");
-const OTHER = FormaCollection("0x5678");
+const MAMMOTHS = FormaCollection("0xC737D98ce1DDdd49295C1507a015600f8ae1D18C");
+const OTHER = FormaCollection("0xA737D98ce1DDdd49295C1507a015600f8ae1D18C");
 
 
 
@@ -65,4 +65,14 @@ function draw() {
   let cap = MAMMOTHS.metadata("cap").asString();
 
   noLoop();
+}
+
+
+function attributes() {
+  return [
+    {
+      "trait_type": "test",
+      "value": "test"
+    }
+  ]
 }
