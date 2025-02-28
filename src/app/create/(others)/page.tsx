@@ -45,9 +45,9 @@ export default function CreatePage() {
         </div>
         <div className={'group h-full w-full'}>
           <Link
-            href={'/create/customize'}
+            href={'/create/'}
             className={
-              'group relative flex h-full w-full flex-col items-center justify-center gap-1 overflow-hidden rounded-[16px] border border-neutral-100/4 bg-neutral-100/4 px-5'
+              'group relative flex h-full w-full cursor-not-allowed flex-col items-center justify-center gap-1 overflow-hidden rounded-[16px] border border-neutral-100/4 bg-neutral-100/4 px-5'
             }
           >
             <Image
@@ -63,7 +63,7 @@ export default function CreatePage() {
               <p>Fork Collection</p>
             </div>
             <p className={'text-center text-sm text-pretty text-neutral-400 mix-blend-plus-lighter'}>
-              Recreate an existing collection with your own style
+              Recreate an existing collection with your own style (Soon...)
             </p>
           </Link>
           <Image

@@ -51,7 +51,6 @@ const Editor = () => {
 
     const originalConsoleError = console.error;
     console.error = (...args: any[]) => {
-      // Send console errors to setError
       setError(args.join(' '));
       originalConsoleError(...args);
     };

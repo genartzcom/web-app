@@ -6,9 +6,20 @@ import TextInput from '@/components/ui/TextInput';
 import Button from '@/components/ui/Button';
 import NumberInput from '@/components/ui/NumberInput';
 import { useCreateStore } from '@/store/createStore';
+import { useState, useEffect } from 'react';
 
 export default function CustomizePage() {
-  const { image, title, description, price, supply, setImage, setTitle, setDescription, setPrice, setSupply } = useCreateStore();
+  const { image, title, description, price, supply, contracts, setImage, setTitle, setDescription, setPrice, setSupply, setContracts } =
+    useCreateStore();
+
+  const [newContract, setNewContract] = useState<string>('');
+
+  useEffect(() => {
+    if (!Array.isArray(contracts)) {
+      console.warn('Contracts is not an array, resetting to empty array');
+      setContracts([]);
+    }
+  }, [contracts, setContracts]);
 
   const handleUpload = (file: File | null) => {
     if (file) {
@@ -16,7 +27,25 @@ export default function CustomizePage() {
     }
   };
 
-  const isDisabled = !image || !title.trim() || !description.trim() || price <= 0 || supply <= 0;
+  const handleAddContract = () => {
+    if (newContract.trim()) {
+      if (Array.isArray(contracts)) {
+        setContracts([...contracts, newContract.trim()]);
+      } else {
+        setContracts([newContract.trim()]);
+      }
+      setNewContract('');
+    }
+  };
+
+  const handleRemoveContract = (contractToRemove: string) => {
+    if (Array.isArray(contracts)) {
+      setContracts(contracts.filter((contract) => contract !== contractToRemove));
+    }
+  };
+
+  const isDisabled =
+    !image || !title.trim() || !description.trim() || price <= 0 || supply <= 0 || !Array.isArray(contracts) || contracts.length === 0;
 
   return (
     <div className={'flex h-full w-full flex-col gap-8'}>
@@ -35,6 +64,31 @@ export default function CustomizePage() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
+            <div className={'flex flex-col'}>
+              <div className={'flex items-end gap-2'}>
+                <TextInput label={'Collection contracts'} value={newContract} onChange={(e) => setNewContract(e.target.value)} />
+                <Button size={'md'} variant={'secondary'} onClick={handleAddContract}>
+                  Add
+                </Button>
+              </div>
+              {Array.isArray(contracts) && contracts.length > 0 && (
+                <div className={'mt-4'}>
+                  <div className={'flex flex-col gap-2 px-6'}>
+                    {contracts.map((contract, index) => (
+                      <div key={index} className={'flex w-full items-center justify-between'}>
+                        <span>{contract}</span>
+                        <button
+                          className={'flex aspect-square h-6 w-6 cursor-pointer items-center justify-center rounded-md bg-neutral-500'}
+                          onClick={() => handleRemoveContract(contract)}
+                        >
+                          <i className="ri-close-line"></i>
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
             <div className={'flex items-center gap-8'}>
               <NumberInput decimal step={0.1} label="Price" max={999} min={0} value={price} onChange={(value) => setPrice(value)} />
               <NumberInput step={10} label="Supply" max={999} min={0} value={supply} onChange={(value) => setSupply(value)} />
