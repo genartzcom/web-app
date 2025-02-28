@@ -5,6 +5,8 @@ import Console from './Console';
 import Sidebar from './SideNavigation';
 import TextEditor from '@/components/create/editor/CodeEditor/TextEditor';
 import Button from '@/components/ui/Button';
+import Metadata from '@/components/create/editor/CodeEditor/Metadata';
+
 import { useCreateStore } from '@/store/createStore';
 
 const Editor = () => {
@@ -84,11 +86,7 @@ const Editor = () => {
           </div>
         </div>
         <div className="h-full w-full max-w-[100%]">
-          {activeTab === 'code' ? (
-            <TextEditor content={content} setContent={setContent} />
-          ) : (
-            <div className="text-neutral-300">Metadata content will be here.</div>
-          )}
+          {activeTab === 'code' ? <TextEditor content={content} setContent={setContent} /> : <Metadata />}
         </div>
         <Console />
       </div>
