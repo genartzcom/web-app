@@ -16,6 +16,8 @@ export default function CustomizePage() {
     }
   };
 
+  const isDisabled = !image || !title.trim() || !description.trim() || price <= 0 || supply <= 0;
+
   return (
     <div className={'flex h-full w-full flex-col gap-8'}>
       <div>
@@ -34,10 +36,12 @@ export default function CustomizePage() {
               onChange={(e) => setDescription(e.target.value)}
             />
             <div className={'flex items-center gap-8'}>
-              <NumberInput step={1} label="Price" max={999} min={0} value={price} onChange={(value) => setPrice(value)} />
+              <NumberInput decimal step={0.1} label="Price" max={999} min={0} value={price} onChange={(value) => setPrice(value)} />
               <NumberInput step={10} label="Supply" max={999} min={0} value={supply} onChange={(value) => setSupply(value)} />
             </div>
-            <Button href={'/create/editor'}>Next Step</Button>
+            <Button href={'/create/editor'} disabled={isDisabled}>
+              Next Step
+            </Button>
           </div>
         </div>
         <div className={'flex w-full items-center justify-center'}>
