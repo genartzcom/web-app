@@ -28,8 +28,7 @@ const Hero = () => {
       </div>
       <div className={'absolute z-[100] flex flex-col items-center justify-center gap-8'}>
         <div className={'flex flex-col items-center gap-2 leading-none'}>
-          <p className={'text-[52px] font-semibold capitalize'}>very cool title will be here</p>
-          <p className={'text-[24px] font-medium text-neutral-200'}>also great subtitle will be here</p>
+          <p className={'max-w-[800px] text-center text-[52px] font-semibold capitalize'}>The One-Stop Shop for Generative Art Collections</p>
         </div>
         <div className={'flex items-center gap-2'}>
           <Button href={'#latest'} variant={'secondary'}>
