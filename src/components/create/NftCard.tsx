@@ -26,7 +26,7 @@ const NftCard: React.FC<NftCardProps> = ({
       </div>
       <div className="mt-2 flex flex-col gap-1 pl-1">
         <p className="text-[14px] leading-[16px] text-neutral-400">{description}</p>
-        <p className="text-[24px] font-semibold">{price} ETH</p>
+        <p className="text-[24px] font-semibold">{price} TIA</p>
       </div>
     </div>
   );

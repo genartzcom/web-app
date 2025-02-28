@@ -10,6 +10,7 @@ interface CreateState {
   isCompiled: boolean;
   isConsoleOpen: boolean;
   error: string | null;
+  contracts: string[];
 
   setImage: (file: File | null) => void;
   setTitle: (title: string) => void;
@@ -20,6 +21,7 @@ interface CreateState {
   setIsCompiled: (status: boolean) => void;
   setIsConsoleOpen: (status: boolean) => void;
   setError: (error: string | null) => void;
+  setContracts: (updater: string[] | ((prev: string[]) => string[])) => void;
 }
 
 export const useCreateStore = create<CreateState>((set) => ({
@@ -32,6 +34,7 @@ export const useCreateStore = create<CreateState>((set) => ({
   isCompiled: false,
   isConsoleOpen: false,
   error: null,
+  contracts: [],
 
   setImage: (file) => set({ image: file }),
   setTitle: (title) => set({ title }),
@@ -42,4 +45,8 @@ export const useCreateStore = create<CreateState>((set) => ({
   setIsCompiled: (status) => set({ isCompiled: status }),
   setIsConsoleOpen: (status) => set({ isConsoleOpen: status }),
   setError: (error) => set({ error }),
+  setContracts: (updater) =>
+    set((state) => ({
+      contracts: typeof updater === 'function' ? updater(state.contracts) : updater,
+    })),
 }));

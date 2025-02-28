@@ -5,6 +5,7 @@ interface NumberInputProps {
   min?: number;
   max?: number;
   step?: number;
+  decimal?: boolean;
   className?: string;
   disabled?: boolean;
   value?: number;
@@ -16,6 +17,7 @@ const NumberInput: React.FC<NumberInputProps> = ({
   min = 0,
   max = 100,
   step = 1,
+  decimal = false,
   className = '',
   disabled = false,
   value = min,
@@ -33,9 +35,11 @@ const NumberInput: React.FC<NumberInputProps> = ({
     }
   }, [min, max, internalValue, onChange]);
 
+  const formatValue = (num: number) => (decimal ? parseFloat(num.toFixed(10)) : Math.round(num));
+
   const increase = () => {
     if (!disabled && internalValue + step <= max) {
-      const newValue = internalValue + step;
+      const newValue = formatValue(internalValue + step);
       setInternalValue(newValue);
       if (onChange) onChange(newValue);
     }
@@ -43,15 +47,16 @@ const NumberInput: React.FC<NumberInputProps> = ({
 
   const decrease = () => {
     if (!disabled && internalValue - step >= min) {
-      const newValue = internalValue - step;
+      const newValue = formatValue(internalValue - step);
       setInternalValue(newValue);
       if (onChange) onChange(newValue);
     }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let newValue = parseInt(e.target.value, 10);
+    let newValue = decimal ? parseFloat(e.target.value) : parseInt(e.target.value, 10);
     if (!isNaN(newValue) && newValue >= min && newValue <= max) {
+      newValue = formatValue(newValue);
       setInternalValue(newValue);
       if (onChange) onChange(newValue);
     }
@@ -70,6 +75,7 @@ const NumberInput: React.FC<NumberInputProps> = ({
         </button>
         <input
           type="number"
+          step={step}
           value={internalValue}
           onChange={handleChange}
           disabled={disabled}

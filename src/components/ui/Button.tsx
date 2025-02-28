@@ -8,9 +8,20 @@ interface ButtonProps {
   variant?: 'primary' | 'secondary' | 'plain';
   className?: string;
   external?: boolean;
+  disabled?: boolean;
 }
 
-const Button = ({ children, href, onClick, size = 'md', variant = 'primary', className = '', external = false, ...props }: ButtonProps) => {
+const Button = ({
+  children,
+  href,
+  onClick,
+  size = 'md',
+  variant = 'primary',
+  className = '',
+  external = false,
+  disabled = false,
+  ...props
+}: ButtonProps) => {
   const baseStyles =
     'flex items-center justify-center gap-1 rounded-full capitalize transition duration-200 ease-in-out active:scale-[0.98] select-none tracking-none font-semibold min-w-[52px] cursor-pointer';
 
@@ -25,9 +36,12 @@ const Button = ({ children, href, onClick, size = 'md', variant = 'primary', cla
     secondary: 'bg-neutral-500 text-neutral-100 hover:bg-neutral-400',
     plain: 'bg-transparent text-neutral-300 hover:bg-transparent active:scale-100',
   };
-  const combinedStyles = `${baseStyles} ${sizeStyles[size]} ${variantStyles[variant]} ${className}`;
 
-  if (href) {
+  const disabledStyles = 'opacity-50 cursor-not-allowed pointer-events-none';
+
+  const combinedStyles = `${baseStyles} ${sizeStyles[size]} ${variantStyles[variant]} ${disabled ? disabledStyles : ''} ${className}`;
+
+  if (href && !disabled) {
     return (
       <Link href={href} target={external ? '_blank' : undefined} className={combinedStyles} {...props}>
         {children}
@@ -36,7 +50,7 @@ const Button = ({ children, href, onClick, size = 'md', variant = 'primary', cla
   }
 
   return (
-    <button onClick={onClick} className={combinedStyles} {...props}>
+    <button onClick={disabled ? undefined : onClick} className={combinedStyles} disabled={disabled} {...props}>
       {children}
     </button>
   );
