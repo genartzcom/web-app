@@ -31,11 +31,21 @@ export async function GET() {
 
 export async function POST(req: Request) {
   const body = await req.json();
+
+  const { code } = body;
+
   console.log('Deploy Başlatıldı:', body);
 
+  const codeBase64 = Buffer.from(code).toString('base64');
 
+  //post to api
+  const response = await fetch(`${process.env.API_URL}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code: codeBase64 }),
+  });
 
   const id = randomUUID();
 
-  return NextResponse.json({ id, message: 'Deploy işlemi başlatıldı.' });
+  return NextResponse.json({ id, message: 'Deploy işlemi başlatıldı.', response });
 }

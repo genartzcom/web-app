@@ -16,7 +16,6 @@ contract %CONTRACT_NAME% is Ownable2Step, ContractMetadata, ERC721Cementable {
 
     uint256 private _nextTokenId;
 
-
     struct TraitRegistry {
         string jtype;
         string key;
@@ -25,8 +24,6 @@ contract %CONTRACT_NAME% is Ownable2Step, ContractMetadata, ERC721Cementable {
     using TokenMetadataReader for address;
     using TokenMetadataEditor for string;
     using Strings for string;
-
-    Counters.Counter private _counter;
 
     %COLLECTION_CONTRACTS%
 
