@@ -47,7 +47,7 @@ const Renderer: React.FC<{ code: string }> = ({ code }) => {
   }, [code]);
 
   return (
-    <div className="h-full w-full overflow-hidden rounded-lg bg-neutral-200">
+    <div className="aspect-square h-full w-full overflow-hidden rounded-lg bg-neutral-200">
       <iframe
         ref={iframeRef}
         srcDoc={srcDoc}

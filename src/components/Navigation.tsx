@@ -30,6 +30,11 @@ const Navigation = () => {
           <p className="text-[28px] font-semibold">GenArtz</p>
         </Link>
         <div className="flex items-center gap-3">
+          {isConnected && (
+            <Button className={'text-neutral-100!'} variant={'plain'} href="/profile">
+              View Profile
+            </Button>
+          )}
           <ConnectWallet />
           {isConnected && (
             <Button external variant="secondary" href="/create">
