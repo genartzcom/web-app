@@ -36,13 +36,9 @@ function FormaCollection(address) {
   return new AFormaCollection(address);
 }
 
-
 // ----------------------------------------------------------------------------------------------------
 
-
-
-const MAMOTH = FormaCollection("0xC737D98ce1DDdd49295C1507a015600f8ae1D18C");
-
+const MAMOTH = FormaCollection('0xC737D98ce1DDdd49295C1507a015600f8ae1D18C');
 
 // ****************************************************************************************************
 /*
@@ -69,15 +65,13 @@ function setup() {
     while (x < width * 1.1) {
       drawBox(x, y, shapeSize * 0.8);
       drawBox(x + w / 2, y + w * sin(TAU / 6), shapeSize * 0.8);
-      x += w
+      x += w;
     }
     y += w * sin(TAU / 6) * 2;
   }
 }
 
-function draw() {
-
-}
+function draw() {}
 
 function drawBox(x, y, w) {
   shuffle(colors, true);
@@ -85,15 +79,14 @@ function drawBox(x, y, w) {
   noStroke();
   for (let i = 0; i < 3; i++) {
     fill(colors[0]);
-    drawRhombus(x, y, w, (TAU / 3 * i));
+    drawRhombus(x, y, w, (TAU / 3) * i);
     texture(createGrfx(w / 2));
-    drawRhombus(x, y, w, (TAU / 3 * i));
+    drawRhombus(x, y, w, (TAU / 3) * i);
   }
   fill(0, 70);
   drawRhombus(x, y, w, TAU / 3);
   fill(255, 40);
-  drawRhombus(x, y, w, TAU / 3 * 2);
-
+  drawRhombus(x, y, w, (TAU / 3) * 2);
 }
 
 function drawRhombus(x, y, w, ang) {

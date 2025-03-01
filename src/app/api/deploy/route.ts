@@ -38,12 +38,17 @@ export async function POST(req: Request) {
 
   const codeBase64 = Buffer.from(code).toString('base64');
 
-  //post to api
-  const response = await fetch(`${process.env.API_URL}`, {
+  console.log('Code:', codeBase64);
+
+  const response = await fetch(`${process.env.API_URL}/deploy`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ code: codeBase64 }),
   });
+
+  const { contract } = await response.json();
+
+  console.log('Contract:', contract);
 
   const id = randomUUID();
 

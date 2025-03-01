@@ -32,12 +32,28 @@ const Editor = () => {
     event.target.value = '';
   };
 
-  const handleRunClick = () => {
+  const handleRunClick = async  () => {
     setError(null);
-    setCode(content);
+
+    const response = await fetch(`/api/editor/p5compile`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code: content }),
+    });
+
+    if(!response.ok) {
+      setError('Failed to compile code');
+      return;
+    }
+
+    const { code } = await response.json();
+
+    const fromBase64 = Buffer.from(code, 'base64').toString('utf-8');
+
+    setCode(fromBase64);
 
     try {
-      eval(content);
+      eval(`${fromBase64}`);
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Unknown error');
     }
