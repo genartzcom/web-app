@@ -11,16 +11,17 @@ import { TokenMetadataReader } from "@forma-dev/sdk/contracts/metadata/TokenMeta
 import { TokenMetadataEditor } from "@forma-dev/sdk/contracts/metadata/TokenMetadataEditor.sol";
 import { Strings } from "@forma-dev/sdk/contracts/utils/Strings.sol";
 import { Base64 } from "@forma-dev/sdk/contracts/utils/Base64.sol";
-import { Counters } from "@openzeppelin/contracts/utils/Counters.sol";
 
 contract %CONTRACT_NAME% is Ownable2Step, ContractMetadata, ERC721Cementable {
+
+    uint256 private _nextTokenId;
+
 
     struct TraitRegistry {
         string jtype;
         string key;
     }
 
-    using Counters for Counters.Counter;
     using TokenMetadataReader for address;
     using TokenMetadataEditor for string;
     using Strings for string;
@@ -39,11 +40,9 @@ contract %CONTRACT_NAME% is Ownable2Step, ContractMetadata, ERC721Cementable {
     constructor(
         string memory _name,
         string memory _symbol,
-        address _initialOwner,
-        address _defaultRoyaltyReceiver,
-        uint96 _defaultRoyaltyFeeNumerator
+        address _initialOwner
     ) ERC721OpenZeppelin(_name, _symbol) Ownable(_initialOwner) {
-        _setDefaultRoyalty(_defaultRoyaltyReceiver, _defaultRoyaltyFeeNumerator);
+        _transferOwnership(_initialOwner);
 
         %COLLECTION_TRAITS%
     }
@@ -68,16 +67,14 @@ contract %CONTRACT_NAME% is Ownable2Step, ContractMetadata, ERC721Cementable {
 
         %ATTRIBUTES%
 
-        _counter.increment();
-
-
-        uint256 newTokenId = _counter.current();
+        uint256 newTokenId = _nextTokenId;
 
         _setTokenMetadata(newTokenId, tokenMetadata);
 
         _cementTokenMetadata(newTokenId);
 
         _safeMint(_to, newTokenId);
+        _nextTokenId++;
     }
 
 
@@ -125,22 +122,6 @@ contract %CONTRACT_NAME% is Ownable2Step, ContractMetadata, ERC721Cementable {
 
     function _getP5Base() internal pure returns (string memory) {
         return string(abi.encodePacked(%P5_LS%));
-    }
-
-    /**
-     * @dev Sets the royalty information that all ids in this contract will default to.
-     *
-     * Requirements:
-     *
-     * - `receiver` cannot be the zero address.
-     * - `feeNumerator` is the number of basis points (1/10000).
-     */
-    function setDefaultRoyalty(address _receiver, uint96 _feeNumerator) external onlyOwner {
-        _setDefaultRoyalty(_receiver, _feeNumerator);
-    }
-
-    function setTokenRoyalty(uint256 _tokenId, address _receiver, uint96 _feeNumerator) external onlyOwner {
-        _setTokenRoyalty(_tokenId, _receiver, _feeNumerator);
     }
 
     function name() public view override(ERC721OpenZeppelin, ContractMetadata) returns (string memory) {

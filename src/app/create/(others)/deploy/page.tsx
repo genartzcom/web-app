@@ -5,9 +5,12 @@ import NftCard from '@/components/create/NftCard';
 import Button from '@/components/ui/Button';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAppKitAccount} from '@reown/appkit/react';
 
 export default function DeployPage() {
   const { image, title, description, price, supply, code } = useCreateStore();
+  const { address } = useAppKitAccount();
+
   const [deploying, setDeploying] = useState(false);
   const [deployLogs, setDeployLogs] = useState<string[]>([]);
   const router = useRouter();
@@ -16,7 +19,7 @@ export default function DeployPage() {
     setDeploying(true);
     setDeployLogs(['Deploy işlemi başlatılıyor...']);
 
-    const formData = { title, description, price, supply, code };
+    const formData = { address, title, description, price, supply, code };
 
     const response = await fetch('/api/deploy', {
       method: 'POST',

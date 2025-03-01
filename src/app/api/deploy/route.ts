@@ -33,6 +33,8 @@ export async function POST(req: Request) {
   const body = await req.json();
   console.log('Deploy Başlatıldı:', body);
 
+
+
   const id = randomUUID();
 
   return NextResponse.json({ id, message: 'Deploy işlemi başlatıldı.' });

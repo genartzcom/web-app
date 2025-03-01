@@ -11,7 +11,6 @@ import { TokenMetadataReader } from "@forma-dev/sdk/contracts/metadata/TokenMeta
 import { TokenMetadataEditor } from "@forma-dev/sdk/contracts/metadata/TokenMetadataEditor.sol";
 import { Strings } from "@forma-dev/sdk/contracts/utils/Strings.sol";
 import { Base64 } from "@forma-dev/sdk/contracts/utils/Base64.sol";
-import { Counters } from "@openzeppelin/contracts/utils/Counters.sol";
 
 contract NFTCollection is Ownable2Step, ContractMetadata, ERC721Cementable {
 
@@ -20,89 +19,82 @@ contract NFTCollection is Ownable2Step, ContractMetadata, ERC721Cementable {
         string key;
     }
 
-    using Counters for Counters.Counter;
     using TokenMetadataReader for address;
     using TokenMetadataEditor for string;
     using Strings for string;
 
-    Counters.Counter private _counter;
 
     address private constant MAMMOTHS = 0xC737D98ce1DDdd49295C1507a015600f8ae1D18C;
-address private constant OTHER = 0xA737D98ce1DDdd49295C1507a015600f8ae1D18C;
+    address private constant OTHER = 0xC737D98ce1DDdd49295C1507a015600f8ae1D18C;
 
     uint256 private constant MAMMOTHS_INDEX = 0;
-uint256 private constant OTHER_INDEX = 1;
+    uint256 private constant OTHER_INDEX = 1;
 
     string private constant CHUNK_0 = "Y2xhc3MgQU1ldGFkYXRhQXR0cmlidXRlIHsKICBjb25zdHJ1Y3RvcihrZXksIHR5cGUsIHZhbHVlKSB7CiAgICB0aGlzLmtleSA9IGtleTsKICAgIHRoaXMudHlwZSA9IHR5cGU7CiAgICB0aGlzLnZhbHVlID0gdmFsdWU7CiAgfQoKICBhc1N0cmluZygpIHt9CgogIGFzSW50KCkge30KCiAgYXNGbG9hdCgpIHt9Cn0KCmNsYXNzIEFGb3JtYUNvbGxlY3Rpb24gewogIGNvbnN0cnVjdG9yKGFkZHJlc3MpIHsKICAgIHRoaXMuYWRkcmVzcyA9IGFkZHJlc3M7CiAgICB0aGlzLnJlcXVpcmUgPSBmYWxzZTsKICAgIHRoaXMubWV0YWRhdGFzID0ge307CiAgfQoKICBtZXRhZGF0YShrZXkpIHsKICAgIHJldHVybiBuZXcgQU1ldGFkYXRhQXR0cmlidXRlKGtleSwgJ3ZhbHVlJywgJ3Rl";
-string private constant CHUNK_1 = "c3QnKTsKICB9CgogIGV4aXN0cygpIHsKICAgIHJldHVybiB0cnVlOwogIH0KCiAgcmVxdWlyZSgpIHsKICAgIHRoaXMucmVxdWlyZSA9IHRydWU7CiAgfQp9CgpmdW5jdGlvbiBGb3JtYUNvbGxlY3Rpb24oYWRkcmVzcykgewogIHJldHVybiBuZXcgQUZvcm1hQ29sbGVjdGlvbihhZGRyZXNzKTsKfQoKCi8vIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KCgoKCgoKCgovLyAqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq";
-string private constant CHUNK_2 = "KioqCgpmdW5jdGlvbiBzZXR1cCgpIHsKCn0KCmZ1bmN0aW9uIGRyYXcoKSB7CiAgYmFja2dyb3VuZCgyNTUpOwoKICBsZXQgdiA9IDA7CiAgaWYgKE1BTU1PVEhTLmV4aXN0cygpKSB7CiAgICBsZXQgdSA9IE1BTU1PVEhTLm1ldGFkYXRhKCJhbmFuIikuYXNTdHJpbmcoKTsKICB9IGVsc2UgewogICAgbGV0IGwgPSBPVEhFUi5tZXRhZGF0YSgiYmFiYW4iKS5hc0ludCgpOwogIH0KCiAgbGV0IGNhcCA9IE1BTU1PVEhTLm1ldGFkYXRhKCJjYXAiKS5hc1N0cmluZygpOwoKICBub0xvb3AoKTsKfQoKCmZ1bmN0aW9uIGF0dHJpYnV0ZXMoKSB7CiAgcmV0dXJuIFsKICAgIHsKICAgICAgInRyYWl0X3R5cGUiOiAidGVzdCIsCiAgICAgICJ2YWx1ZSI6ICJ0ZXN0IgogICAgfQogIF0K";
-string private constant CHUNK_3 = "fQ==";
+    string private constant CHUNK_1 = "c3QnKTsKICB9CgogIGV4aXN0cygpIHsKICAgIHJldHVybiB0cnVlOwogIH0KCiAgcmVxdWlyZSgpIHsKICAgIHRoaXMucmVxdWlyZSA9IHRydWU7CiAgfQp9CgpmdW5jdGlvbiBGb3JtYUNvbGxlY3Rpb24oYWRkcmVzcykgewogIHJldHVybiBuZXcgQUZvcm1hQ29sbGVjdGlvbihhZGRyZXNzKTsKfQoKCi8vIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KCgoKCgoKCgovLyAqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq";
+    string private constant CHUNK_2 = "KioqCgpmdW5jdGlvbiBzZXR1cCgpIHsKCn0KCmZ1bmN0aW9uIGRyYXcoKSB7CiAgYmFja2dyb3VuZCgyNTUpOwoKICBsZXQgdiA9IDA7CiAgaWYgKE1BTU1PVEhTLmV4aXN0cygpKSB7CiAgICBsZXQgdSA9IE1BTU1PVEhTLm1ldGFkYXRhKCJhbmFuIikuYXNTdHJpbmcoKTsKICB9IGVsc2UgewogICAgbGV0IGwgPSBPVEhFUi5tZXRhZGF0YSgiYmFiYW4iKS5hc0ludCgpOwogIH0KCiAgbGV0IGNhcCA9IE1BTU1PVEhTLm1ldGFkYXRhKCJjYXAiKS5hc1N0cmluZygpOwoKICBub0xvb3AoKTsKfQoKCmZ1bmN0aW9uIGF0dHJpYnV0ZXMoKSB7CiAgcmV0dXJuIFsKICAgIHsKICAgICAgInRyYWl0X3R5cGUiOiAidGVzdCIsCiAgICAgICJ2YWx1ZSI6ICJ0ZXN0IgogICAgfQogIF0K";
+    string private constant CHUNK_3 = "fQ==";
 
-uint256 private constant CHUNK_COUNT = 4;
+    uint256 private constant CHUNK_COUNT = 4;
 
     mapping(uint256 => TraitRegistry[]) private _traitRegistry;
     mapping(uint256 => uint256) private _traitRegistrySize;
 
+    uint256 private _nextTokenId;
+
     constructor(
         string memory _name,
         string memory _symbol,
-        address _initialOwner,
-        address _defaultRoyaltyReceiver,
-        uint96 _defaultRoyaltyFeeNumerator
+        address _initialOwner
     ) ERC721OpenZeppelin(_name, _symbol) Ownable(_initialOwner) {
-        _setDefaultRoyalty(_defaultRoyaltyReceiver, _defaultRoyaltyFeeNumerator);
+        _transferOwnership(_initialOwner);
 
         _traitRegistry[MAMMOTHS_INDEX].push(TraitRegistry("asString", "anan"));
-_traitRegistry[MAMMOTHS_INDEX].push(TraitRegistry("asString", "cap"));
-_traitRegistry[OTHER_INDEX].push(TraitRegistry("asInt", "baban"));
-_traitRegistrySize[MAMMOTHS_INDEX] = 2;
-_traitRegistrySize[OTHER_INDEX] = 1;
+        _traitRegistry[MAMMOTHS_INDEX].push(TraitRegistry("asString", "cap"));
+        _traitRegistry[OTHER_INDEX].push(TraitRegistry("asInt", "baban"));
+        _traitRegistrySize[MAMMOTHS_INDEX] = 2;
+        _traitRegistrySize[OTHER_INDEX] = 1;
     }
 
     function mint(address _to, uint256[] memory _tokenIds) external {
-
         uint256 tokenId_Mammoths = _tokenIds[MAMMOTHS_INDEX];
-uint256 tokenId_Other = _tokenIds[OTHER_INDEX];
+        uint256 tokenId_Other = _tokenIds[OTHER_INDEX];
 
         require(IERC721(MAMMOTHS).ownerOf(tokenId_Mammoths) == _msgSender(), "Not the owner of required Mammoths");
-require(IERC721(OTHER).ownerOf(tokenId_Other) == _msgSender(), "Not the owner of required Other");
+        require(IERC721(OTHER).ownerOf(tokenId_Other) == _msgSender(), "Not the owner of required Other");
 
         string memory trait_Anan_MAMMOTHS = MAMMOTHS.getTokenAttribute(tokenId_Mammoths, "anan");
-string memory trait_Baban_OTHER = OTHER.getTokenAttribute(tokenId_Other, "baban");
-string memory trait_Cap_MAMMOTHS = MAMMOTHS.getTokenAttribute(tokenId_Mammoths, "cap");
+        string memory trait_Baban_OTHER = OTHER.getTokenAttribute(tokenId_Other, "baban");
+        string memory trait_Cap_MAMMOTHS = MAMMOTHS.getTokenAttribute(tokenId_Mammoths, "cap");
 
         string memory MAMMOTHS_jsField = generateCollectionTraitJS("MAMMOTHS", MAMMOTHS, MAMMOTHS_INDEX, tokenId_Mammoths);
-string memory OTHER_jsField = generateCollectionTraitJS("OTHER", OTHER, OTHER_INDEX, tokenId_Other);
+        string memory OTHER_jsField = generateCollectionTraitJS("OTHER", OTHER, OTHER_INDEX, tokenId_Other);
 
-        
         string memory allTraits = string(abi.encodePacked(MAMMOTHS_jsField, OTHER_jsField));
-    
 
         string memory canvasUnpacked = string(Base64.decode(_getP5Base()));
         string memory canvas = string(abi.encodePacked(allTraits, canvasUnpacked));
 
         string memory canvasBase64 = Base64.encode(bytes(canvas));
 
-
         string memory tokenMetadata = "{}";
-tokenMetadata = tokenMetadata
-    .setTokenAttribute("anan", trait_Anan_MAMMOTHS)
-    .setTokenAttribute("baban", trait_Baban_OTHER)
-    .setTokenAttribute("cap", trait_Cap_MAMMOTHS)
-   .setTokenAttribute("canvas", canvasBase64);
-
-        _counter.increment();
+        tokenMetadata = tokenMetadata
+            .setTokenAttribute("anan", trait_Anan_MAMMOTHS)
+            .setTokenAttribute("baban", trait_Baban_OTHER)
+            .setTokenAttribute("cap", trait_Cap_MAMMOTHS)
+            .setTokenAttribute("canvas", canvasBase64);
 
 
-        uint256 newTokenId = _counter.current();
+        uint256 newTokenId = _nextTokenId;
 
         _setTokenMetadata(newTokenId, tokenMetadata);
 
         _cementTokenMetadata(newTokenId);
 
         _safeMint(_to, newTokenId);
-    }
 
+        _nextTokenId++;
+    }
 
     function _generateTrait(string memory collection, string[] memory types, string[] memory keys, string[] memory values) internal pure returns (string memory) {
         string memory code = string(abi.encodePacked("const ", collection, " = { traits: { "));
